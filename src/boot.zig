@@ -26,5 +26,7 @@ export fn _start() callconv(.Naked) noreturn {
     kmain();
 
     arch.clearInterrupts();
-    while (true) {}
+    while (true) {
+        arch.halt();
+    }
 }

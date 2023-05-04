@@ -1,3 +1,5 @@
+const std = @import("std");
+
 pub const VgaColor = u8;
 /// Hardware text mode color constants
 pub const VgaColors = enum(VgaColor) {
@@ -21,6 +23,7 @@ pub const VgaColors = enum(VgaColor) {
 
 const VGA_HEIGHT = 25;
 const VGA_WIDTH = 80;
+var printf_buf: [256]u8 = undefined;
 
 pub fn vgaEntryColor(fg: VgaColors, bg: VgaColors) VgaColor {
     return @enumToInt(fg) | (@enumToInt(bg) << 4);
@@ -39,6 +42,10 @@ pub const Terminal = struct {
     const buffer = @intToPtr([*]volatile u16, 0xB8000);
 
     pub fn initialize() void {
+        clear();
+    }
+
+    pub fn clear() void {
         for (0..VGA_WIDTH) |c| {
             for (0..VGA_HEIGHT) |r| {
                 putCharAt(' ', color, c, r);
@@ -96,5 +103,17 @@ pub const Terminal = struct {
                 putChar(c);
             }
         }
+    }
+
+    pub fn printf(comptime format: []const u8, args: anytype) void {
+        const formatted = std.fmt.bufPrint(printf_buf[0..], format, args) catch unreachable;
+        write(formatted);
+    }
+
+    pub const writer = std.io.Writer(void, error{}, callback){ .context = {} };
+
+    fn callback(_: void, string: []const u8) error{}!usize {
+        Terminal.write(string);
+        return string.len;
     }
 };
