@@ -18,3 +18,7 @@ pub inline fn setInterrupts() void {
 pub inline fn halt() void {
     asm volatile ("hlt");
 }
+
+pub fn initialize() void {
+    gdt.initialize();
+}
