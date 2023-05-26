@@ -105,9 +105,8 @@ pub const Terminal = struct {
         }
     }
 
-    pub fn printf(comptime format: []const u8, args: anytype) void {
-        const formatted = std.fmt.bufPrint(printf_buf[0..], format, args) catch unreachable;
-        write(formatted);
+    pub fn print(comptime format: []const u8, args: anytype) void {
+        _ = writer.print(format, args) catch unreachable;
     }
 
     pub const writer = std.io.Writer(void, error{}, callback){ .context = {} };

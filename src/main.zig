@@ -9,5 +9,5 @@ pub fn kmain() void {
 }
 
 fn printInitMessage() void {
-    Terminal.printf("Hello World from Zig {s}\n", .{builtin.zig_version_string});
+    Terminal.print("Hello World from Zig {s}\n", .{builtin.zig_version_string});
 }
