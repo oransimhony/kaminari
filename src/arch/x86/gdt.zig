@@ -65,7 +65,7 @@ var gdt align(4) = [_]GDTEntry{
 };
 
 var gdtr = GDTRegister{
-    .limit = @as(u16, @sizeOf(@TypeOf(gdt))),
+    .limit = @as(u16, @sizeOf(@TypeOf(gdt)) - 1),
     .base = undefined,
 };
 
