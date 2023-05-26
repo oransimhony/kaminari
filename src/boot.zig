@@ -21,7 +21,7 @@ export var multiboot align(4) linksection(".multiboot") = Multiboot{
 export var stack_bytes: [16 * 1024]u8 align(4) linksection(".bss") = undefined;
 
 export fn _start() callconv(.Naked) noreturn {
-    arch.setEsp(@ptrToInt(&stack_bytes) + stack_bytes.len);
+    arch.setStackPointer(@ptrToInt(&stack_bytes) + stack_bytes.len);
 
     kmain();
 
